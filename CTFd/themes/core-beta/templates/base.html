@@ -41,20 +41,17 @@
 <body>
 {% include "components/navbar.html" %}
 
-<main role="main">
+<main role="main"
+      style="background: url('{{ url_for('views.themes', path='img/bg.jpg') }}') no-repeat center center fixed; 
+             background-size: cover; 
+             min-height: 100vh; 
+             color: white;
+             margin-bottom: 0;">
+      
   {% block content %}
   {% endblock %}
 </main>
 
-<footer class="footer">
-  <div class="container text-center">
-    <a href="https://ctfd.io" class="text-secondary">
-      <small class="text-muted">
-        {% trans %}Powered by CTFd{% endtrans %}
-      </small>
-    </a>
-  </div>
-</footer>
 
 {% include "components/notifications.html" %}
 

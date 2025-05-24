@@ -1,4 +1,27 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+<style>
+  .navbar,
+  .navbar a,
+  .navbar .nav-link,
+  .navbar .dropdown-menu .dropdown-item,
+  .navbar .navbar-brand,
+  .navbar .nav-item .nav-link,
+  .navbar .nav-link span,
+  .navbar .dropdown-toggle,
+  .navbar .fas {
+    color: white !important;
+  }
+
+  .navbar .dropdown-menu {
+    background-color: #343a40; /* Match bg-dark background */
+  }
+
+  .navbar .dropdown-menu .dropdown-item:hover {
+    background-color: #495057; /* Darker hover for dropdown items */
+    color: white !important;
+  }
+</style>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top " >
   <div class="container">
     <a href="{{ url_for('views.static_html', route='/') }}" class="navbar-brand">
       {% if Configs.ctf_logo %}
@@ -194,7 +217,7 @@
           </form>
         </li>
 
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <button class="nav-link theme-switch" type="button">
             <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans %}Toggle theme{% endtrans %}">
               <i class="fas fa-sun d-none d-md-inline"></i>
@@ -204,7 +227,7 @@
               {% trans %}Toggle theme{% endtrans %}
             </span>
           </button>
-        </li>
+        </li> -->
       </ul>
     </div>
   </div>
