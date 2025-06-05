@@ -4,8 +4,24 @@
 </style>
 {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
   const DEBUG = true;
+
+  let myCanvas = document.createElement('canvas');
+  myCanvas.className = 'custom-confetti-canvas';
+  Object.assign(myCanvas.style, {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100vw',
+    height: '100vh',
+    pointerEvents: 'none',
+    zIndex: '999999'
+  });
+  document.body.appendChild(myCanvas);
+
+  const myConfetti = confetti.create(myCanvas, { resize: true, useWorker: true });
 
   const observer = new MutationObserver(mutations => {
     for (const mutation of mutations) {
@@ -16,10 +32,28 @@
           node.textContent.toLowerCase().includes('correct')
         ) {
           if (DEBUG) console.log('[🎉 CONFETTI DEBUG] Correct submission detected!');
-          confetti({
-            particleCount: 150,
-            spread: 100,
-            origin: { y: 0.6 }
+            //left
+          myConfetti({
+            particleCount: 100,
+            angle: 60,
+            spread: 60,
+            startVelocity: 55,
+            gravity: 0.7,
+            ticks: 150,
+            origin: { x: 0, y: 1 },
+            // colors: ['#ff4b1f', '#1fddff', '#f9ca24'] if needed specific colors
+
+          });
+
+          // 🎉 Burst from bottom-right
+          myConfetti({
+            particleCount: 100,
+            angle: 120,
+            spread: 60,
+            startVelocity: 55,
+            gravity: 0.7,
+            ticks: 150,
+            origin: { x: 1, y: 1 }
           });
         }
       });
@@ -29,7 +63,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('challenge-window');
     if (!modal) {
-      console.warn('[🎉 CONFETTI DEBUG] challenge-window not found');
+      console.warn('[🎉 CONFETTI DEBUG] ❌ Modal not found');
       return;
     }
 
@@ -38,9 +72,10 @@
       subtree: true
     });
 
-    if (DEBUG) console.log('[🎉 CONFETTI DEBUG] Watching for success alerts inside #challenge-window');
+    if (DEBUG) console.log('[🎉 CONFETTI DEBUG] ✅ Observer attached to modal');
   });
 </script>
+
 
 <div class="challenges-bg" style="min-height: 100vh;">
   <div class="" style="text-align: center;">
@@ -81,8 +116,7 @@
               <div class="challenges-row row">
                 <template x-for="(c, idx) in getChallenges(category)" :key="c.id">
                   <div class="col-sm-6 col-md-4 col-lg-3 my-3">
-                    <button
-                    id="challenge-entry"
+                    <button id="challenge-entry"
                       class="challenge-button  btn btn-dark w-100 h-100 text-white border-0 position-relative overflow-hidden"
                       :class="[
     ...c.tags.map((tag) => `tag-${tag.value.replace(/ /g, '-')}`),
