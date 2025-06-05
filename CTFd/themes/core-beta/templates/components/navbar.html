@@ -19,6 +19,9 @@
     background-color: #495057; /* Darker hover for dropdown items */
     color: white !important;
   }
+  .custom-icon-color {
+    color: #02b8e2;
+  }
 </style>
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top " >
@@ -29,7 +32,8 @@
             class="img-responsive ctf_logo"
             src="{{ url_for('views.files', path=Configs.ctf_logo) }}"
             alt="{{ Configs.ctf_name }}"
-            height="25"
+            height="60"
+          
         >
       {% else %}
         {{ Configs.ctf_name }}
@@ -55,14 +59,15 @@
 
         {% if Configs.account_visibility != 'admins' %}
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('users.listing') }}">
+            <a class="nav-link "  style="font-weight: 900;"  href="{{ url_for('users.listing') }}" id="tour-users">
+                <img src="/themes/core-beta/static/img/use.png" alt="Users" width="35" height="35" class="me-1 " >
               {% trans %}Users{% endtrans %}
-            </a>
+            </a>  
           </li>
 
           {% if Configs.user_mode == 'teams' %}
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('teams.listing') }}">
+              <a class="nav-link" style="font-weight: 900;" id="tour-team" href="{{ url_for('teams.listing') }}">
                 {% trans %}Teams{% endtrans %}
               </a>
             </li>
@@ -71,14 +76,17 @@
 
         {% if Configs.account_visibility != 'admins' and Configs.score_visibility != 'admins' %}
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('scoreboard.listing') }}">
+            <a class="nav-link"  style="font-weight: 900;" href="{{ url_for('scoreboard.listing') }}" id="tour-scoreboard">
+              <img src="/themes/core-beta/static/img/score1.png" alt="Users" width="35" height="35" class="me-1 " >
               {% trans %}Scoreboard{% endtrans %}
             </a>
           </li>
         {% endif %}
 
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('challenges.listing') }}">
+          <a class="nav-link" style="font-weight: 900;" href="{{ url_for('challenges.listing') }}" id="tour-challenges">
+      <img src="/themes/core-beta/static/img/challeng.png" alt="Users" width="33" height="33" class="me-1 " >
+
             {% trans %}Challenges{% endtrans %}
           </a>
         </li>
@@ -91,12 +99,12 @@
 
           {% if is_admin() %}
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('admin.view') }}">
+              <a class="nav-link" href="{{ url_for('admin.view') }}" id="tour-admin">
                 <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans %}Admin Panel{% endtrans %}">
                     <i class="fas fa-wrench d-none d-md-inline d-lg-none"></i>
                 </span>
-                <span class="d-sm-inline d-md-none d-lg-inline">
-                  <i class="fas fa-wrench pe-1"></i>
+                <span class="d-sm-inline d-md-none d-lg-inline" style="font-size:large;">
+                  <i class="fas fa-wrench pe-1"  ></i>
                   {% trans %}Admin Panel{% endtrans %}
                 </span>
               </a>
@@ -104,11 +112,11 @@
           {% endif %}
 
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('views.notifications') }}">
-              <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans %}Notifications{% endtrans %}">
+            <a class="nav-link" href="{{ url_for('views.notifications') }}" id="tour-notifications"> 
+              <span data-bs-toggle="tooltip" data-bs-placement="bottom"  title="{% trans %}Notifications{% endtrans %}">
                 <i class="fas fa-bell d-none d-md-inline d-lg-none"></i>
               </span>
-              <span class="d-sm-inline d-md-none d-lg-inline">
+              <span class="d-sm-inline d-md-none d-lg-inline" style="font-size:large;">
                   <i class="fas fa-bell pe-1"></i>
                   <span x-data x-show="$store.unread_count > 0" x-text="$store.unread_count" class="badge rounded-pill bg-danger badge-notification"></span>
                   {% trans %}Notifications{% endtrans %}
@@ -122,7 +130,7 @@
                 <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans %}Team{% endtrans %}">
                   <i class="fas fa-users d-none d-md-inline d-lg-none"></i>
                 </span>
-                <span class="d-sm-inline d-md-none d-lg-inline">
+                <span class="d-sm-inline d-md-none d-lg-inline" style="font-size:large;">
                   <i class="fas fa-users pe-1"></i>
                   {% trans %}Team{% endtrans %}
                 </span>
@@ -131,11 +139,11 @@
           {% endif %}
 
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('users.private') }}">
+            <a class="nav-link" href="{{ url_for('users.private') }}"  id="tour-profile">
               <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans %}Profile{% endtrans %}">
                 <i class="fas fa-user-circle d-none d-md-inline d-lg-none"></i>
               </span>
-              <span class="d-sm-inline d-md-none d-lg-inline">
+              <span class="d-sm-inline d-md-none d-lg-inline" style="font-size:large;">
                 <i class="fas fa-user-circle pe-1"></i>
                 {% trans %}Profile{% endtrans %}
               </span>
@@ -143,12 +151,12 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('views.settings') }}">
+            <a class="nav-link" href="{{ url_for('views.settings') }}" id="tour-settings">
               <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans %}Settings{% endtrans %}">
                 <i class="fas fa-cogs d-none d-md-inline d-lg-none"></i>
               </span>
-              <span class="d-sm-inline d-md-none d-lg-inline">
-                <i class="fas fa-cogs pe-1"></i>
+              <span class="d-sm-inline d-md-none d-lg-inline" style="font-size:large;">
+                <i class="fas fa-cogs pe-1 " ></i>
                 {% trans %}Settings{% endtrans %}
               </span>
             </a>
@@ -159,7 +167,7 @@
               <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans %}Logout{% endtrans %}">
                 <i class="fas fa-sign-out-alt d-none d-md-inline d-lg-none"></i>
               </span>
-              <span class="d-sm-inline d-md-none d-lg-inline">
+              <span class="d-sm-inline d-md-none d-lg-inline" style="font-size:large;">
                 <i class="fas fa-sign-out-alt pe-1"></i><span class="d-lg-none">
                   {% trans %}Logout{% endtrans %}
                 </span>
@@ -175,7 +183,7 @@
                   <i class="fas fa-user-plus d-none d-md-inline d-lg-none"></i>
                 </span>
                 <span class="d-sm-inline d-md-none d-lg-inline">
-                  <i class="fas fa-user-plus pe-1"></i>
+                  <i class="fas fa-user-plus pe-1 "></i>
                   {% trans %}Register{% endtrans %}
                 </span>
               </a>
@@ -196,10 +204,10 @@
         {% endif %}
 
         <li class="nav-item dropdown">
-          <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" style="font-size:large;" aria-expanded="false">
             <i class="fas fa-language d-none d-md-inline"></i>
-            <span class="d-sm-inline d-md-none">
-              <i class="fas fa-language pe-1"></i>
+            <span class="d-sm-inline d-md-none" >
+              <i class="fas fa-language pe-1" ></i>
               {% trans %}Change language{% endtrans %}
             </span>
           </button>

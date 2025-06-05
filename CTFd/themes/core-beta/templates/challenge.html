@@ -1,6 +1,206 @@
-<div :class="getStyles()" role="document" x-data="Challenge" x-init="id = {{ challenge.id }}; max_attempts = {{ max_attempts }}; attempts = {{ attempts }}">
-  <div class="modal-content">
-    <div class="modal-body py-4 px-4 px-sm-5">
+<style>
+
+.top-corner-focus {
+  position: relative;
+  padding: 1rem;
+}
+
+/* === OUTER L-LINES (DISCONNECTED) === */
+.outer-line {
+  position: absolute;
+  background-color: #00b06a; /* Red */
+  z-index: 5;
+}
+
+.outer-line.vertical {
+  width: 3px;
+  height: 20px;
+}
+
+.outer-line.horizontal {
+  height: 3px;
+  width: 20px;
+}
+
+/* TOP LEFT */
+.top-left.vertical {
+  top: 0;
+  left: 0;
+}
+.top-left.horizontal {
+  top: 0;
+  left: 10px; /* creates the gap between vertical & horizontal */
+}
+
+/* TOP RIGHT */
+.top-right.vertical {
+  top: 0;
+  right: 0;
+}
+.top-right.horizontal {
+  top: 0;
+  right: 10px;
+}
+
+/* === INNER BLUE CORNERS === */
+.inner-corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #00b06a; /* Blue */
+  z-index: 6;
+}
+
+/* Clip to make L-shapes */
+.top-left {
+  top: 6px;
+  left: 6px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.top-right {
+  top: 6px;
+  right: 6px;
+  border-left: none;
+  border-bottom: none;
+}
+
+/* === OUTER DISCONNECTED Ls === */
+.outer-line {
+  position: absolute;
+  background-color: #00b06a; /* Red */
+  z-index: 5;
+}
+
+.outer-line.vertical {
+  width: 3px;
+  height: 20px;
+}
+
+.outer-line.horizontal {
+  height: 3px;
+  width: 20px;
+}
+
+/* === TOP CORNERS === */
+.top-left.vertical    { top: 10px; left: 0; }
+.top-left.horizontal  { top: 0; left: 10px; }
+
+.top-right.vertical   { top: 10px; right: 0; }
+.top-right.horizontal { top: 0; right: 10px; }
+
+/* === BOTTOM CORNERS === */
+.bottom-left.vertical    { bottom: 10px; left: 0; }
+.bottom-left.horizontal  { bottom: 0; left: 10px; }
+
+.bottom-right.vertical   { bottom: 10px; right: 0; }
+.bottom-right.horizontal { bottom: 0; right: 10px; }
+
+/* === INNER CONNECTED BLUE CORNERS === */
+.inner-corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #00b06a; /* Blue */
+  z-index: 6;
+}
+
+/* Top corners */
+.top-left     { top: 15px; left: 15px; border-right: none; border-bottom: none; }
+.top-right    { top: 15px; right: 15px; border-left: none; border-bottom: none; }
+
+/* Bottom corners */
+.bottom-left  { bottom: 15px; left: 15px; border-top: none; border-right: none; }
+.bottom-right { bottom: 15px; right: 15px; border-top: none; border-left: none; }
+
+
+.scan-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  opacity: 0.5;
+  color: #39ff14;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Courier New', monospace;
+  font-size: 1.2rem;
+  z-index: 999;
+  pointer-events: none;
+  text-shadow: 0 0 5px #39ff14;
+  overflow: hidden;
+}
+
+.scan-text {
+  animation: glitchText 1.2s infinite alternate;
+  z-index: 2;
+}
+
+.scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #39ff14;
+  animation: scanUpDown 2s infinite  ease-in-out;
+  opacity: 0.8;
+  z-index: 1;
+}
+
+@keyframes scanUpDown {
+  0%   { top: 0; }
+  50%  { top: 100%; }
+  100% { top: 0; }
+}
+
+@keyframes glitchText {
+  0%, 100% { opacity: 1; transform: translateX(0); }
+  10% { transform: translateX(-1px); }
+  20% { transform: translateX(1px); }
+  30% { transform: translateX(-2px); }
+  40% { transform: translateX(2px); }
+  50% { transform: translateX(0); }
+}
+
+</style>
+
+
+<div :class="getStyles()"  class="" role="document" x-data="Challenge" x-init="id = {{ challenge.id }}; max_attempts = {{ max_attempts }}; attempts = {{ attempts }}">
+  <div class="modal-content top-corner-focus  bg-dark text-white " x-data="{ scanning: true }" x-init="setTimeout(() => scanning = false, 1000)">
+ <span class="outer-line top-left vertical"></span>
+  <span class="outer-line top-left horizontal"></span>
+
+  <span class="outer-line top-right vertical"></span>
+  <span class="outer-line top-right horizontal"></span>
+
+  <!-- INNER top corners -->
+  <span class="inner-corner top-left"></span>
+  <span class="inner-corner top-right"></span>
+
+  <!-- BOTTOM corners -->
+  <span class="outer-line bottom-left vertical"></span>
+  <span class="outer-line bottom-left horizontal"></span>
+  <span class="outer-line bottom-right vertical"></span>
+  <span class="outer-line bottom-right horizontal"></span>
+  <span class="inner-corner bottom-left"></span>
+  <span class="inner-corner bottom-right"></span>
+
+  <div class="scan-overlay" x-show="scanning" x-transition.opacity.duration.800ms>
+    <div class="scan-text">[ SYSTEM SCAN IN PROGRESS ]</div>
+    <div class="scan-line"></div>
+  </div>
+
+
+    <div class="modal-body py-4 px-4 px-sm-5  transition-opacity duration-700 ease-in-out"
+        :class="{ 'opacity-0 pointer-events-none': scanning, 'opacity-100': !scanning }"
+
+        >
 
       <div>
         <button type="button" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -184,7 +384,7 @@
                           </button>
                           <a :href="'https://twitter.com/intent/tweet?url=' + encodeURIComponent(share_url)" role="button" class="btn btn-sm btn-outline-secondary" target="_blank">
                             <i class="fa-brands fa-twitter"></i>
-                          </a>
+                          </a> 
                           <a :href="'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(share_url)" role="button" class="btn btn-sm btn-outline-secondary" target="_blank">
                             <i class="fa-brands fa-facebook-f"></i>
                           </a>

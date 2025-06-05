@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>{{ title or Configs.ctf_name }}</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" href="{{ Configs.ctf_small_icon }}" type="image/x-icon">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/css/shepherd.css">
+<meta name="csrf-token" content="{{ nonce }}">
 
   {{ meta | safe }}
 
   {% block stylesheets %}
-    {{ Assets.css("assets/scss/main.scss") }}
+  {{ Assets.css("assets/scss/main.scss") }}
   {% endblock %}
 
   {{ Plugins.styles }}
@@ -38,29 +41,159 @@
 
   {{ Configs.theme_header }}
 </head>
-<body>
-{% include "components/navbar.html" %}
 
-<main role="main"
-      style="background: url('{{ url_for('views.themes', path='img/bg.jpg') }}') no-repeat center center fixed; 
+<body>
+  {% include "components/navbar.html" %}
+
+  <main role="main" style="background: url('{{ url_for('views.themes', path='img/bg.jpg') }}') no-repeat center center fixed; 
              background-size: cover; 
              min-height: 100vh; 
              color: white;
              margin-bottom: 0;">
-      
-  {% block content %}
-  {% endblock %}
-</main>
+
+    {% block content %}
+    {% endblock %}
+  </main>
 
 
-{% include "components/notifications.html" %}
+  {% include "components/notifications.html" %}
 
-{% block scripts %}
+  {% block scripts %}
   {{ Assets.js("assets/js/page.js") }}
-{% endblock %}
+  {% endblock %}
 
-{{ Plugins.scripts }}
+  {{ Plugins.scripts }}
 
-{{ Configs.theme_footer }}
+  {{ Configs.theme_footer }}
+  <script src="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/js/shepherd.min.js"></script>
+
 </body>
+
+<script>
+function waitForElement(selector, callback, interval = 100, timeout = 5000) {
+  const start = Date.now();
+  (function check() {
+    const el = document.querySelector(selector);
+    if (el) return callback(el);
+    if (Date.now() - start < timeout) setTimeout(check, interval);
+  })();
+}
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const tour = new Shepherd.Tour({
+      defaultStepOptions: {
+        cancelIcon: {
+          enabled: true
+        },
+        classes: 'shadow-md  text-light bg-white',
+        scrollTo: { behavior: 'smooth', block: 'center' }
+      }
+    });
+
+    tour.addStep({
+      id: 'step-users',
+      text: 'See a list of all users in the CTF.',
+      attachTo: { element: '#tour-users', on: 'bottom' },
+      buttons: [{ text: 'Next', action: tour.next }]
+    });
+
+if (document.querySelector('#tour-team')) {
+  tour.addStep({
+    id: 'step-team',
+      text: 'Teams : See List of Teams.',
+    attachTo: { element: '#tour-team', on: 'bottom' },
+    buttons: [
+      { text: 'Back', action: tour.back },
+      { text: 'Next', action: tour.next }
+    ]
+  });
+}
+
+
+    tour.addStep({
+      id: 'step-scoreboard',
+      text: 'Track who’s dominating the scoreboard here.',
+      attachTo: { element: '#tour-scoreboard', on: 'bottom' },
+      buttons: [
+        { text: 'Back', action: tour.back },
+        { text: 'Next', action: tour.next }
+      ]
+    });
+
+tour.addStep({
+  id: 'step-challenges',
+  text: 'Click here to view and solve challenges.',
+  attachTo: { element: '#tour-challenges', on: 'bottom' },
+  buttons: [
+    { text: 'Back', action: tour.back },
+    {
+      text: 'Next',
+      action: () => {
+        localStorage.setItem("resumeTourStep", "step-challenge-entry");
+        document.querySelector('#tour-challenges')?.click(); // navigate
+      }
+    }
+  ]
+});
+
+
+
+
+
+ if (document.querySelector('#tour-admin')) {
+  tour.addStep({
+    id: 'step-admin',
+    text: 'Admins only: access site control and management.',
+    attachTo: { element: '#tour-admin', on: 'bottom' },
+    buttons: [
+      { text: 'Back', action: tour.back },
+      { text: 'Next', action: tour.next }
+    ]
+  });
+}
+
+ 
+
+    tour.addStep({
+      id: 'step-notifications',
+      text: 'Check your CTF notifications here.',
+      attachTo: { element: '#tour-notifications', on: 'bottom' },
+      buttons: [
+        { text: 'Back', action: tour.back },
+        { text: 'Next', action: tour.next }
+      ]
+    });
+
+    tour.addStep({
+      id: 'step-profile',
+      text: 'Access your profile and account info.',
+      attachTo: { element: '#tour-profile', on: 'bottom' },
+      buttons: [
+        { text: 'Back', action: tour.back },
+        { text: 'Next', action: tour.next }
+      ]
+    });
+
+    tour.addStep({
+      id: 'step-settings',
+      text: 'Manage your settings and preferences here.',
+      attachTo: { element: '#tour-settings', on: 'bottom' },
+      buttons: [
+        { text: 'Back', action: tour.back },
+        { text: 'Done', action: tour.complete }
+      ]
+    });
+
+    // Optional: Add a help button to trigger the tour
+    const helpBtn = document.createElement('button');
+    helpBtn.innerText = 'Start Tour';
+    helpBtn.className = 'btn btn-sm btn-outline-light';
+    helpBtn.style.position = 'fixed';
+    helpBtn.style.bottom = '20px';
+    helpBtn.style.right = '20px';
+    helpBtn.onclick = () => tour.start();
+    document.body.appendChild(helpBtn);
+  });
+</script>
+
 </html>
