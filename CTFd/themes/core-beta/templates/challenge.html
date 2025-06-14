@@ -168,11 +168,75 @@
   50% { transform: translateX(0); }
 }
 
+.custom-centered-modal {
+  position: fixed !important;
+  left: 18%;
+  top: 8%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1000px;
+  max-height: 80%;
+  overflow: hidden;
+  z-index: 1055;
+  border-radius: 10px;
+  padding: 1rem;
+}
+/* //MOBILE */
+@media (max-width: 600px) {
+  .custom-centered-modal {
+    top: 12%;
+    left: 8%;
+    width: 100%;
+    max-width: 80%; 
+    padding: 0.5rem;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+  .custom-centered-modal {
+    top: 13%;
+    left: 5%;
+    width: 100%;
+    max-width: 90%;
+    padding: 1rem;
+  }
+}
+.modal-body {
+  max-height: calc(80vh - 100px); 
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+.glass-cyber {
+  background: rgba(20, 20, 20, 0.6); /* dark semi-transparent */
+  backdrop-filter: blur(12px);      /* frosted glass effect */
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 255, 128, 0.2); /* glowing neon border */
+  box-shadow: 0 0 20px rgba(0, 255, 128, 0.3), 
+              0 0 60px rgba(0, 255, 255, 0.1) inset;
+  border-radius: 12px;
+  animation: neonPulse 3s infinite ease-in-out;
+}
+.btn-close {
+  filter: invert(100%);
+  opacity: 1 !important;
+}
+
+/* Optional animated glow
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(0, 255, 128, 0.3),
+                0 0 60px rgba(0, 255, 255, 0.1) inset;
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(0, 255, 128, 0.6),
+                0 0 80px rgba(0, 255, 255, 0.2) inset;
+  }
+} */
 </style>
+<!--  class custom-centered-modal  addded for modal positioning -->
 
-
-<div :class="getStyles()"  class="" role="document" x-data="Challenge" x-init="id = {{ challenge.id }}; max_attempts = {{ max_attempts }}; attempts = {{ attempts }}">
-  <div class="modal-content top-corner-focus  bg-dark text-white " x-data="{ scanning: true }" x-init="setTimeout(() => scanning = false, 1000)">
+<div :class="getStyles()"  class="custom-centered-modal" role="document" x-data="Challenge" x-init="id = {{ challenge.id }}; max_attempts = {{ max_attempts }}; attempts = {{ attempts }}">
+  <div class=" modal-content   top-corner-focus  glass-cyber   text-white  " x-data="{ scanning: true }" x-init="setTimeout(() => scanning = false, 1000)">
  <span class="outer-line top-left vertical"></span>
   <span class="outer-line top-left horizontal"></span>
 
@@ -197,7 +261,7 @@
   </div>
 
 
-    <div class="modal-body py-4 px-4 px-sm-5  transition-opacity duration-700 ease-in-out"
+    <div class="modal-body py-4 px-4 px-sm-5  overflow-auto transition-opacity duration-700 ease-in-out"
         :class="{ 'opacity-0 pointer-events-none': scanning, 'opacity-100': !scanning }"
 
         >

@@ -1,8 +1,579 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+ <style>
+
+       
+      
+        /* Main content styles */
+        .main-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 3rem;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            
+        }
+
+        .hero-title {
+            font-size: 1rem;
+
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .hero-highlight {
+            background: linear-gradient(45deg, #00d4ff, #3b82f6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+            max-width: 48rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #06b6d4, #3b82f6);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 10px 15px -3px rgba(6, 182, 212, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #0891b2, #2563eb);
+        }
+
+        .btn-secondary {
+            border: 1px solid #475569;
+            color: #cbd5e1;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: #64748b;
+            color: white;
+        }
+
+        /* Features Grid Styles */
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(51, 65, 85, 0.5);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .feature-card:hover::before {
+            left: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .feature-card.cyan:hover {
+            border-color: rgba(6, 182, 212, 0.5);
+        }
+
+        .feature-card.orange:hover {
+            border-color: rgba(249, 115, 22, 0.5);
+        }
+
+        .feature-card.green:hover {
+            border-color: rgba(34, 197, 94, 0.5);
+        }
+
+        .feature-card.purple:hover {
+            border-color: rgba(147, 51, 234, 0.5);
+        }
+
+        .feature-card.yellow:hover {
+            border-color: rgba(234, 179, 8, 0.5);
+        }
+
+        .feature-card.red:hover {
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-icon-container {
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .feature-card.cyan .feature-icon-container {
+            background-color: rgba(6, 182, 212, 0.2);
+        }
+
+        .feature-card.cyan:hover .feature-icon-container {
+            background-color: rgba(6, 182, 212, 0.3);
+        }
+
+        .feature-card.orange .feature-icon-container {
+            background-color: rgba(249, 115, 22, 0.2);
+        }
+
+        .feature-card.orange:hover .feature-icon-container {
+            background-color: rgba(249, 115, 22, 0.3);
+        }
+
+        .feature-card.green .feature-icon-container {
+            background-color: rgba(34, 197, 94, 0.2);
+        }
+
+        .feature-card.green:hover .feature-icon-container {
+            background-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .feature-card.purple .feature-icon-container {
+            background-color: rgba(147, 51, 234, 0.2);
+        }
+
+        .feature-card.purple:hover .feature-icon-container {
+            background-color: rgba(147, 51, 234, 0.3);
+        }
+
+        .feature-card.yellow .feature-icon-container {
+            background-color: rgba(234, 179, 8, 0.2);
+        }
+
+        .feature-card.yellow:hover .feature-icon-container {
+            background-color: rgba(234, 179, 8, 0.3);
+        }
+
+        .feature-card.red .feature-icon-container {
+            background-color: rgba(239, 68, 68, 0.2);
+        }
+
+        .feature-card.red:hover .feature-icon-container {
+            background-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .feature-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .feature-card.cyan .feature-icon {
+            color: #00d4ff;
+        }
+
+        .feature-card.orange .feature-icon {
+            color: #f97316;
+        }
+
+        .feature-card.green .feature-icon {
+            color: #22c55e;
+        }
+
+        .feature-card.purple .feature-icon {
+            color: #9333ea;
+        }
+
+        .feature-card.yellow .feature-icon {
+            color: #eab308;
+        }
+
+        .feature-card.red .feature-icon {
+            color: #ef4444;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .feature-description {
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.5), rgba(30, 41, 59, 0.5));
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(90deg, transparent 1px, rgba(0, 212, 255, 0.1) 1px),
+                linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .stats-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, var(--stat-color), var(--stat-color-light));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: pulse-stat 2s ease-in-out infinite;
+        }
+
+        .stat-item:nth-child(1) {
+            --stat-color: #00d4ff;
+            --stat-color-light: #67e8f9;
+        }
+
+        .stat-item:nth-child(2) {
+            --stat-color: #f97316;
+            --stat-color-light: #fb923c;
+        }
+
+        .stat-item:nth-child(3) {
+            --stat-color: #22c55e;
+            --stat-color-light: #4ade80;
+        }
+
+        .stat-item:nth-child(4) {
+            --stat-color: #9333ea;
+            --stat-color-light: #a855f7;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.875rem;
+        }
+
+        /* Animations */
+        @keyframes pulse-glow {
+            0%, 100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes spin-slow {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes gradient-x {
+            0%, 100% {
+                background-size: 200% 200%;
+                background-position: left center;
+            }
+            50% {
+                background-size: 200% 200%;
+                background-position: right center;
+            }
+        }
+
+        @keyframes ping {
+            75%, 100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes pulse-stat {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        /* Responsive Design */
+        @media (min-width: 640px) {
+            .brand-text {
+                display: block;
+            }
+            
+            .nav-container {
+                padding: 0 1.5rem;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .nav-menu {
+                display: block;
+            }
+            
+            .mobile-menu-btn {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 3.75rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .search-container {
+                display: block;
+            }
+            
+            .nav-container {
+                padding: 0 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
   <div class="container">
+    {% if content %}
     {{ content | safe }}
+    {% else %}
+
+  <main class="main-content">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="hero-title">
+                Welcome to <span class="hero-highlight">Ears Up</span>
+            </h1>
+            <p class="hero-description">
+                Master cybersecurity through hands-on challenges. Test your skills, compete with peers, and level up your security expertise.
+            </p>
+            <div class="hero-buttons">
+                <a href="#" class="btn-primary">Start Challenges</a>
+                <a href="#" class="btn-secondary">View Leaderboard</a>
+            </div>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="features-grid">
+            <div class="feature-card cyan">
+                <div class="feature-header">
+                    <div class="feature-icon-container">
+                        <svg class="feature-icon" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"/>
+                            <circle cx="12" cy="12" r="6"/>
+                            <circle cx="12" cy="12" r="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Diverse Challenges</h3>
+                </div>
+                <p class="feature-description">
+                    From web exploitation to cryptography, test your skills across multiple cybersecurity domains.
+                </p>
+            </div>
+
+            <div class="feature-card orange">
+                <div class="feature-header">
+                    <div class="feature-icon-container">
+                        <svg class="feature-icon" viewBox="0 0 24 24">
+                            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+                            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+                            <path d="M4 22h16"/>
+                            <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+                            <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+                            <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Competitive Ranking</h3>
+                </div>
+                <p class="feature-description">
+                    Climb the leaderboard and showcase your cybersecurity prowess to the community.
+                </p>
+            </div>
+
+            <div class="feature-card green">
+                <div class="feature-header">
+                    <div class="feature-icon-container">
+                        <svg class="feature-icon" viewBox="0 0 24 24">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="m22 21-3.5-3.5"/>
+                            <circle cx="17" cy="17" r="3"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Team Collaboration</h3>
+                </div>
+                <p class="feature-description">
+                    Form teams, share knowledge, and tackle complex challenges together.
+                </p>
+            </div>
+
+            <div class="feature-card purple">
+                <div class="feature-header">
+                    <div class="feature-icon-container">
+                        <svg class="feature-icon" viewBox="0 0 24 24">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Learning Resources</h3>
+                </div>
+                <p class="feature-description">
+                    Access comprehensive guides, tutorials, and documentation to enhance your skills.
+                </p>
+            </div>
+
+            <div class="feature-card yellow">
+                <div class="feature-header">
+                    <div class="feature-icon-container">
+                        <svg class="feature-icon" viewBox="0 0 24 24">
+                            <polygon points="13,2 3,14 12,14 11,22 21,10 12,10 13,2"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Real-time Scoring</h3>
+                </div>
+                <p class="feature-description">
+                    Get instant feedback and track your progress with our dynamic scoring system.
+                </p>
+            </div>
+
+            <div class="feature-card red">
+                <div class="feature-header">
+                    <div class="feature-icon-container">
+                        <svg class="feature-icon" viewBox="0 0 24 24">
+                            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                            <circle cx="12" cy="16" r="1"/>
+                            <path d="m7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Secure Environment</h3>
+                </div>
+                <p class="feature-description">
+                    Practice in a safe, isolated environment designed for ethical hacking and learning.
+                </p>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <h2 class="stats-title">Platform Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">1,247</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">89</div>
+                    <div class="stat-label">Challenges</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">15,632</div>
+                    <div class="stat-label">Flags Captured</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">342</div>
+                    <div class="stat-label">Teams Formed</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {% endif %}
   </div>
 {% endblock %}
 

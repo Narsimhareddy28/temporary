@@ -8,10 +8,7 @@
   <link rel="shortcut icon" href="{{ Configs.ctf_small_icon }}" type="image/x-icon">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/css/shepherd.css">
 <meta name="csrf-token" content="{{ nonce }}">
-
-  {{ meta | safe }}
-
-  {% block stylesheets %}
+{% block stylesheets %}
   {{ Assets.css("assets/scss/main.scss") }}
   {% endblock %}
 
@@ -19,8 +16,91 @@
 
   {{ Assets.js("assets/js/color_mode_switcher.js", type=None) }}
 
+  <style>
+.shepherd-element {
+  background-color: #0a0a0a !important;
+  color: #00ffcc !important;
+  border: 1px solid #00ffcc !important;
+  border-radius: 6px !important;
+  font-family: 'Courier New', monospace !important;
+  padding: 1rem !important;
+  box-shadow: none !important;
+}
+
+/* Step content */
+.shepherd-content {
+  font-size: 0.9rem;
+  color: #00ffcc;
+}
+
+/* Buttons */
+.shepherd-button {
+  background: transparent !important;
+  border: 1px solid #00ffcc !important;
+  color: #00ffcc !important;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  margin-right: 6px;
+  border-radius: 4px;
+}
+
+.shepherd-button:hover {
+  background-color: #00ffcc !important;
+  color: #000 !important;
+}
+
+/* Cancel (X) icon */
+.shepherd-cancel-icon {
+  color: #ff4444 !important;
+  font-size: 1rem;
+}
+
+/* Arrow color */
+.shepherd-arrow:before {
+  background-color: #00ffcc !important;
+}
+.shepherd-content,
+.shepherd-text,
+.shepherd-title,
+.shepherd-header,
+.shepherd-content * {
+  color: #00ffcc !important;
+  font-family: 'Courier New', monospace !important;
+  font-size: 0.9rem;
+}
+
+   .fade-slide {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInSlide 1.5s ease-out forwards;
+    }
+
+    @keyframes fadeInSlide {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+   
+    @media (min-width: 1200px) {
+      .custom-padding {
+        padding-left: 15rem;
+        padding-right: 15rem;
+      }
+    }
+
+    @media (min-width: 1400px) {
+      .custom-padding {
+        padding-left: 20rem;
+        padding-right: 20rem;
+      }
+    }
+</style>
+
   <script type="text/javascript">
-      window.init = {
+      window.init = { 
           'urlRoot': "{{ request.script_root }}",
           'csrfNonce': "{{ Session.nonce }}",
           'userMode': "{{ Configs.user_mode }}",
@@ -41,15 +121,17 @@
 
   {{ Configs.theme_header }}
 </head>
-
-<body>
-  {% include "components/navbar.html" %}
-
-  <main role="main" style="background: url('{{ url_for('views.themes', path='img/bg.jpg') }}') no-repeat center center fixed; 
+<!-- style="background: url('{{ url_for('views.themes', path='img/background.png') }}') no-repeat center center fixed; 
              background-size: cover; 
              min-height: 100vh; 
              color: white;
-             margin-bottom: 0;">
+             margin-top: 0pxs;" -->
+<body  style="
+  background: #020617">
+  
+  {% include "components/navbar.html" %}
+
+  <main role="main"  >
 
     {% block content %}
     {% endblock %}
@@ -189,11 +271,13 @@ tour.addStep({
     helpBtn.innerText = 'Start Tour';
     helpBtn.className = 'btn btn-sm btn-outline-light';
     helpBtn.style.position = 'fixed';
-    helpBtn.style.bottom = '20px';
-    helpBtn.style.right = '20px';
+    helpBtn.style.fontSize = '16px';
+    helpBtn.style.bottom = '40px';
+    helpBtn.style.right = '40px';
     helpBtn.onclick = () => tour.start();
     document.body.appendChild(helpBtn);
   });
 </script>
+
 
 </html>
