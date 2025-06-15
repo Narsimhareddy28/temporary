@@ -16,7 +16,6 @@
         .hero-section {
             text-align: center;
             margin-bottom: 3rem;
-            height: 60vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -26,7 +25,7 @@
         }
 
         .hero-title {
-            font-size: 1rem;
+            font-size: 3rem;
 
             font-weight: 700;
             color: white;
@@ -41,13 +40,36 @@
         }
 
         .hero-description {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             color: #94a3b8;
             margin-bottom: 2rem;
             max-width: 48rem;
             margin-left: auto;
             margin-right: auto;
         }
+           .terminal-blink {
+                font-family: 'Fira Mono', 'Consolas', monospace;
+                color: #00d4ff;
+                background: rgba(15, 23, 42, 0);
+                display: inline-block;
+                border-radius: 0.4rem;
+                font-size: 1.1rem;
+                letter-spacing: 0.02em;
+                }
+                .blinking-cursor {
+                display: inline-block;
+                width: 0.7em;
+                height: 1.4em;
+                vertical-align: bottom;
+                background: #00d4ff;
+                margin-left: 2px;
+                border-radius: 2px;
+                animation: blink-cursor 0.8s steps(1) infinite;
+                }
+                @keyframes blink-cursor {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0; }
+                }
 
         .hero-buttons {
             display: flex;
@@ -437,9 +459,14 @@
   <main class="main-content">
         <!-- Hero Section -->
         <div class="hero-section">
-            <h1 class="hero-title">
-                Welcome to <span class="hero-highlight">Ears Up</span>
+            <h1 class="hero-title ">
+              Welcome to <span class="hero-highlight fade-slide">Ears Up</span> Cyber Security
             </h1>
+            <div class="terminal-blink" id="terminal-blink">
+              <span> <span id="terminal-text"></span><span class="blinking-cursor"></span></span>
+            </div>
+          
+        
             <p class="hero-description">
                 Master cybersecurity through hands-on challenges. Test your skills, compete with peers, and level up your security expertise.
             </p>
@@ -572,7 +599,25 @@
             </div>
         </div>
     </main>
+  <script>
+              // Terminal typing effect for "the ctf platform"
+              document.addEventListener("DOMContentLoaded", function() {
+                const text = "The CTF Platform";
+                const terminalText = document.getElementById("terminal-text");
+                let idx = 0;
 
+                function typeLetter() {
+                if (idx < text.length) {
+                  terminalText.textContent += text[idx];
+                  idx++;
+                  setTimeout(typeLetter, 70);
+                }
+                }
+
+                // Wait 2 seconds with blinking cursor, then start typing
+                setTimeout(typeLetter, 2000);
+                });
+              </script>
     {% endif %}
   </div>
 {% endblock %}
