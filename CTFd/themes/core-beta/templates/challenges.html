@@ -1,8 +1,154 @@
 {% extends "base.html" %}
+
+{% block content %}
+<!-- 
 <style>
+.controls-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.filter-tabs {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-tab {
+    background: rgba(44, 45, 62, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #A0A0A0;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.filter-tab:hover {
+    color: #FFFFFF;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.filter-tab.active {
+    background: linear-gradient(135deg, #00C6FF 0%, #0072FF 100%);
+    color: #FFFFFF;
+    border-color: transparent;
+}
+
+.view-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.difficulty-filter select,
+.status-filter select {
+    background: rgba(44, 45, 62, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #FFFFFF;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.difficulty-filter select:focus,
+.status-filter select:focus {
+    outline: none;
+    border-color: #00C6FF;
+}
+
+.view-toggle {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.view-btn {
+    background: rgba(44, 45, 62, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #A0A0A0;
+    padding: 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.view-btn:hover {
+    color: #FFFFFF;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.view-btn.active {
+    background: linear-gradient(135deg, #00C6FF 0%, #0072FF 100%);
+    color: #FFFFFF;
+    border-color: transparent;
+}
+
+</style> -->
+
+<style>
+  .filter-tab.active,
+  .view-btn.active {
+    background: linear-gradient(135deg, #00C6FF 0%, #0072FF 100%) !important;
+    color: #fff !important;
+    border: none !important;
+  }
+
+  .challenge-title {
+    background: linear-gradient(135deg, #00C6FF 0%, #0072FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Stats Section */
+  .stat-card {
+    background: rgba(44, 45, 62, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .stat-icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  /* Gradient backgrounds */
+  .gradient-orange {
+    background: linear-gradient(135deg, #FF8C00 0%, #FF6B00 100%);
+  }
+
+  .gradient-green {
+    background: linear-gradient(135deg, #00FF88 0%, #00CC6A 100%);
+  }
+
+  .gradient-yellow {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  }
+
+  .gradient-purple {
+    background: linear-gradient(135deg, #8A2BE2 0%, #6A1B9A 100%);
+  }
+</style>
 
 </style>
-{% block content %}
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
@@ -32,7 +178,7 @@
           node.textContent.toLowerCase().includes('correct')
         ) {
           if (DEBUG) console.log('[🎉 CONFETTI DEBUG] Correct submission detected!');
-            //left
+          //left
           myConfetti({
             particleCount: 100,
             angle: 60,
@@ -77,12 +223,89 @@
 </script>
 
 
+
 <div class="challenges-bg" style="min-height: 100vh;">
   <div class="" style="text-align: center;">
     <div class="container">
-      <h1 class="mt-5  ">
+      <h1 class="challenge-title mt-5 display-4 fw-bold mb-4">
         {% trans %}Challenges{% endtrans %}
       </h1>
+    </div>
+  </div>
+
+  <!-- //filter and controls section -->
+  <div class="controls-section d-flex justify-content-between align-items-center mb-4 gap-4 p-5 flex-wrap">
+    <div class="filter-tabs d-flex gap-2 flex-wrap">
+      <button class="filter-tab active btn btn-outline-light" data-category="all">All</button>
+      <button class="filter-tab btn btn-outline-light" data-category="web">Web</button>
+      <button class="filter-tab btn btn-outline-light" data-category="crypto">Crypto</button>
+      <button class="filter-tab btn btn-outline-light" data-category="forensics">Forensics</button>
+      <button class="filter-tab btn btn-outline-light" data-category="reverse">Reverse</button>
+      <button class="filter-tab btn btn-outline-light" data-category="pwn">PWN</button>
+      <button class="filter-tab btn btn-outline-light" data-category="misc">Misc</button>
+    </div>
+
+    <div class="view-controls d-flex align-items-center gap-3">
+      <div class="view-toggle d-flex gap-2">
+        <button class="view-btn active btn btn-outline-light" data-view="grid">
+          <i class="fas fa-th"></i>
+        </button>
+        <button class="view-btn btn btn-outline-light" data-view="list">
+          <i class="fas fa-list"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- Stats section  -->
+  <div class="container mb-5 px-2">
+    <div class="row g-4">
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="stat-card d-flex align-items-center p-4 rounded-4">
+          <div class="stat-icon d-flex justify-content-center align-items-center rounded-3 me-3 gradient-orange">
+            <i class="fas fa-puzzle-piece text-white fs-4"></i>
+          </div>
+          <div class="stat-info">
+          <div class="stat-number fw-bold fs-2 text-white" x-text="$store.stats.total">0</div>
+          <div class="stat-label small text-secondary">Total Challenges</div>
+        </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="stat-card d-flex align-items-center p-4 rounded-4">
+          <div class="stat-icon d-flex justify-content-center align-items-center rounded-3 me-3 gradient-green">
+            <i class="fas fa-check-circle text-white fs-4"></i>
+          </div>
+          <div class="stat-info">
+            <div class="stat-number fw-bold fs-2 text-white">23</div>
+            <div class="stat-label small text-secondary">Completed</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="stat-card d-flex align-items-center p-4 rounded-4">
+          <div class="stat-icon d-flex justify-content-center align-items-center rounded-3 me-3 gradient-yellow">
+            <i class="fas fa-star text-white fs-4"></i>
+          </div>
+          <div class="stat-info">
+            <div class="stat-number fw-bold fs-2 text-white">1,247</div>
+            <div class="stat-label small text-secondary">Points Earned</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="stat-card d-flex align-items-center p-4 rounded-4">
+          <div class="stat-icon d-flex justify-content-center align-items-center rounded-3 me-3 gradient-purple">
+            <i class="fas fa-medal text-white fs-4"></i>
+          </div>
+          <div class="stat-info">
+            <div class="stat-number fw-bold fs-2 text-white">#42</div>
+            <div class="stat-label small text-secondary">Your Rank</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -93,70 +316,78 @@
       </div>
     </div>
 
-    <div x-data="ChallengeBoard" @load-challenges.window="loadChallenges()"
+    <div x-data="ChallengeBoard" class="mb-5" @load-challenges.window="loadChallenges()"
       @load-challenge.window="loadChallenge($event.detail)">
-      <div x-ref="challengeWindow" id="challenge-window" class="modal fade " tabindex="-1" role="dialog" x-data=""
-        x-html="$store.challenge.data.view"></div>
 
+      <!-- Modal -->
+      <div x-ref="challengeWindow" id="challenge-window" class="modal fade" tabindex="-1" role="dialog" x-data=""
+        x-html="$store.challenge.data.view">
+      </div>
+
+      <!-- Loading -->
       <div x-show="!loaded">
-        <div class="min-vh-50 d-flex align-items-center">
-          <div class="text-center w-100">
-            <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
-          </div>
+        <div class="min-vh-50 d-flex align-items-center justify-content-center">
+          <i class="fas fa-circle-notch fa-spin fa-3x fa-fw text-secondary"></i>
         </div>
       </div>
 
+      <!-- Loaded Challenges -->
       <div x-show="loaded">
         <template x-for="(category, idx) in getCategories()" :key="idx">
           <div class="pt-5">
             <div class="category-header mb-3">
-              <h3 x-text="category"></h3>
+              <h3 class="text-white border-secondary pb-2" x-text="category"></h3>
+              
             </div>
-            <div class="category-challenges d-flex flex-column">
-              <div class="challenges-row row">
-                <template x-for="(c, idx) in getChallenges(category)" :key="c.id">
-                  <div class="col-sm-6 col-md-4 col-lg-3 my-3">
-                    <button id="challenge-entry"
-                      class="challenge-button  btn btn-dark w-100 h-100 text-white border-0 position-relative overflow-hidden"
-                      :class="[
-    ...c.tags.map((tag) => `tag-${tag.value.replace(/ /g, '-')}`),
-  ]" :value="c.id" @click="loadChallenge(c.id)" x-data="{
-    getCategoryImage(cat) {
-      if (!cat) return null;
-      const name = cat.toLowerCase();
-      const keywordMap = {
-        web: 'web.png',
-        crypto: 'crypto.png',
-        forensics: 'forensics.png',
-        reversing: 'reversing.png',
-        misc: 'misc.png',
-        osint: 'osint.png',
-        pwn: 'pwn.png'
-      };
-      for (const keyword in keywordMap) {
-        if (name.includes(keyword)) {
-          return '/themes/core-beta/static/img/' + keywordMap[keyword];
-        }
-      }
-      return null;
-    }
-  }" :style="getCategoryImage(c.category)
-    ? `background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${getCategoryImage(c.category)}'); background-position: center; background-size: cover; background-repeat: no-repeat; border-radius: 10px;`
-    : 'background-color: #1b1b1b; border-radius: 10px;'" style="height: 200px; border-radius: 10px;">
-                      <!-- ✅ Solved overlay badge (conditionally shown) -->
-                      <template x-if="c.solved_by_me">
-                        <div class="position-absolute top-0 end-0 bg-success text-white px-2 py-1 small rounded-start"
-                          style="z-index: 2;">
-                          ✓ Solved
-                        </div>
-                      </template>
 
-                      <!-- Content layer -->
-                      <div class="challenge-inner my-3" style="z-index: 1;">
-                        <p class="fw-bold mb-1" x-text="c.name"></p>
-                        <span x-text="c.value"></span>
+            <div class="category-challenges">
+              <div class="challenges-row row g-4">
+                <template x-for="(c, idx) in getChallenges(category)" :key="c.id">
+                  <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card challenge-card h-100 p-3 border-0 shadow-sm bg-dark text-light"
+                      @click="loadChallenge(c.id)" :value="c.id" style="cursor: pointer;" :class="[
+                        ...c.tags.map((tag) => `tag-${tag.value.replace(/ /g, '-')}`)
+                      ]">
+
+                      <!-- Header -->
+                      <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                          <h5 class="challenge-title mb-1 fw-bold" x-text="c.name"></h5>
+                          <span class="badge bg-primary text-uppercase" x-text="c.category.toUpperCase()"></span>
+                        </div>
+                        <div class="challenge-points text-info fw-semibold" x-text="`${c.value} pts`"></div>
                       </div>
-                    </button>
+
+                      <!-- Description -->
+                      <p class="challenge-description mb-3" x-text="c.description"></p>
+
+                      <!-- Footer -->
+                      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-auto">
+                        <div class="challenge-meta d-flex align-items-center gap-3">
+                          <!-- 🔁 Optional fallback if not solved and still want status shown -->
+                          <template x-if="!c.solved_by_me && c.status">
+                            <div class="challenge-status d-flex align-items-center gap-2" :class="{
+                              'text-warning': c.status === 'attempted',
+                              'text-secondary': c.status === 'not-started'
+                            }">
+                              <i :class="{
+                                'fas fa-hourglass-half': c.status === 'attempted',
+                                'fas fa-circle': c.status === 'not-started'
+                              }"></i>
+                              <span class="status-text"
+                                x-text="c.status.charAt(0).toUpperCase() + c.status.slice(1)"></span>
+                            </div>
+                          </template>
+                        </div>
+                        <!-- ✅ Show ✓ Solved here if solved_by_me -->
+                        <template x-if="c.solved_by_me">
+                          <div class="challenge-status d-flex align-items-center gap-2 text-success">
+                            <i class="fas fa-check-circle"></i>
+                            <span class="status-text">Solved</span>
+                          </div>
+                        </template>
+                      </div>
+                    </div>
                   </div>
                 </template>
               </div>
@@ -166,6 +397,7 @@
       </div>
     </div>
   </div>
+
 
 </div>
 
@@ -271,4 +503,5 @@
 
 {% block scripts %}
 {{ Assets.js("assets/js/challenges.js") }}
+
 {% endblock %}

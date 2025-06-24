@@ -6,6 +6,8 @@ import CTFd from "./index";
 import { Modal, Tab, Tooltip } from "bootstrap";
 import highlight from "./theme/highlight";
 
+
+console.log("CTFd.challenges.js loaded");
 function addTargetBlank(html) {
   let dom = new DOMParser();
   let view = dom.parseFromString(html, "text/html");
@@ -23,6 +25,9 @@ Alpine.store("challenge", {
     view: "",
   },
 });
+
+
+
 
 Alpine.data("Hint", () => ({
   id: null,
